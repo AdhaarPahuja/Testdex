@@ -3,28 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LiquidFi - Decentralized Banking</title>
+    <title>Simple DEX and ROI Calculator</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/web3@1.6.0/dist/web3.min.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>ROI Calculator</h1>
-        <div class="input-group">
-            <label for="investmentAmount">Deposit Amount ($100 to $1000):</label>
-            <input type="range" id="investmentAmount" min="100" max="1000" value="100" step="100" class="slider">
-            <span id="amountDisplay">$100</span>
+        <h1>Simple DEX Interface</h1>
+        
+        <!-- Token Swap Section -->
+        <div class="section">
+            <h2>Token Swap</h2>
+            <div class="input-group">
+                <label for="swap-pair">Select Swap Pair:</label>
+                <select id="swap-pair" class="dropdown">
+                    <option value="ETH/USDC">ETH/USDC</option>
+                    <option value="LQFI/USDC">LQFI/USDC</option>
+                    <option value="ETH/USDT">ETH/USDT</option>
+                </select>
+            </div>
+            <button id="swapTokens" class="button">Swap Tokens</button>
         </div>
-        <div class="input-group">
-            <label for="staking-pair">Select Staking Pair:</label>
-            <select id="staking-pair" class="dropdown">
-                <option value="ETH/USDC">ETH/USDC</option>
-                <option value="LQFI/USDC">LQFI/USDC</option>
-                <option value="ETH/USDT">ETH/USDT</option>
-            </select>
+
+        <!-- ROI Calculator Section -->
+        <div class="section">
+            <h2>ROI Calculator</h2>
+            <div class="input-group">
+                <label for="investmentAmount">Deposit Amount ($100 to $1000):</label>
+                <input type="range" id="investmentAmount" min="100" max="1000" value="100" step="100" class="slider">
+                <span id="amountDisplay">$100</span>
+            </div>
+            <div class="input-group">
+                <label for="staking-pair">Select Staking Pair:</label>
+                <select id="staking-pair" class="dropdown">
+                    <option value="ETH/USDC">ETH/USDC</option>
+                    <option value="LQFI/USDC">LQFI/USDC</option>
+                    <option value="ETH/USDT">ETH/USDT</option>
+                </select>
+            </div>
+            <button id="calculateROI" class="button">Calculate ROI</button>
+            <div id="roiResult"></div>
         </div>
-        <button id="calculateROI" class="button">Calculate ROI</button>
-        <div id="roiResult"></div>
     </div>
     <script src="app.js"></script>
 </body>
