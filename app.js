@@ -2,22 +2,23 @@ document.addEventListener('DOMContentLoaded', function () {
     const connectWalletButton = document.getElementById('connectWallet');
     const walletStatus = document.getElementById('walletStatus');
     const swapTokensButton = document.getElementById('swapTokens');
+    const investmentAmount = document.getElementById('investmentAmount');
+    const calculateROIBtn = document.getElementById('calculateROI');
+    const roiResult = document.getElementById('roiResult');
     const pairSelect = document.getElementById('pair');
-    const oneYearFDBtn = document.getElementById('oneYearFD');
 
-    // Connect Wallet Button Interaction
+    // Enable interaction after wallet connection
     connectWalletButton.addEventListener('click', async function () {
         if (window.ethereum) {
             try {
                 await window.ethereum.request({ method: 'eth_requestAccounts' });
                 const web3 = new Web3(window.ethereum);
                 walletStatus.innerText = 'Wallet Connected';
-                swapTokensButton.disabled = false;
-                oneYearFDBtn.disabled = false;
                 walletStatus.classList.add('connected');
+                swapTokensButton.disabled = false;
             } catch (error) {
                 console.error("User denied account access");
-                alert('Wallet connection failed!');
+                walletStatus.innerText = 'Connection Failed';
                 walletStatus.classList.add('error');
             }
         } else {
@@ -25,27 +26,31 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Token Swap Interaction
-    swapTokensButton.addEventListener('click', function () {
-        if (pairSelect.value !== "") {
-            alert(`Initiating swap for selected pair: ${pairSelect.value}`);
-            swapTokensButton.classList.add('active');
-            // Animation to simulate processing
-            setTimeout(() => {
-                alert(`Swap completed successfully!`);
-                swapTokensButton.classList.remove('active');
-            }, 2000);
+    // Handle ROI calculation
+    calculateROIBtn.addEventListener('click', function () {
+        const amount = parseFloat(investmentAmount.value);
+        if (isNaN(amount) || amount <= 0) {
+            roiResult.textContent = "Please enter a valid amount.";
+            roiResult.classList.add('error');
+            return;
         }
-    });
-
-    // Fixed Deposit Interaction
-    oneYearFDBtn.addEventListener('click', function () {
-        alert(`Initiating fixed deposit for 1 year with expected 50% ROI`);
-        oneYearFDBtn.classList.add('active');
-        // Animation to simulate processing
-        setTimeout(() => {
-            alert(`Fixed deposit successful!`);
-            oneYearFDBtn.classList.remove('active');
-        }, 2000);
+        const selectedPair = pairSelect.value;
+        let roiPercentage = 0;
+        switch (selectedPair) {
+            case 'ETH/USDC':
+            case 'LQFI/USDC':
+                roiPercentage = 40; // Example percentage for these pairs
+                break;
+            case 'ETH/USDT':
+                roiPercentage = 35; // Different ROI for different pair
+                break;
+            default:
+                roiResult.textContent = "Please select a valid pair.";
+                roiResult.classList.add('error');
+                return;
+        }
+        const roi = amount * (roiPercentage / 100);
+        roiResult.textContent = `Expected ROI: $${roi.toFixed(2)} after 1 year at ${roiPercentage}% rate.`;
+        roiResult.classList.remove('error');
     });
 });
