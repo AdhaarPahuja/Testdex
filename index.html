@@ -77,22 +77,18 @@
             <button id="swapTokens" class="mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" disabled>Swap</button>
         </div>
 
-        <!-- Fixed Deposit Section -->
-        <div class="mt-6">
-            <h2 class="text-lg font-bold">Fixed Deposit</h2>
-            <p>Select a pair above to view fixed deposit options and potential returns.</p>
-            <button id="oneYearFD" class="mt-2 w-full bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded" disabled>1 Year - 50% ROI</button>
-        </div>
-
-        <!-- ROI Calculator Section -->
-        <div class="mt-6">
-            <h2 class="text-lg font-bold">ROI Calculator</h2>
-            <input type="number" id="investmentAmount" placeholder="Enter investment amount" class="w-full p-2 border border-gray-300 rounded">
-            <button id="calculateROI" class="mt-4 w-full bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">Calculate ROI</button>
-            <p id="roiResult" class="mt-4"></p>
-        </div>
+        <!-- Staking (Fixed Deposit) Section -->
+<div>
+    <h2 class="text-lg font-bold mt-6">Fixed Deposit</h2>
+    <div class="mt-2">
+        <label for="staking-pair" class="block">Select Staking Pair:</label>
+        <select id="staking-pair" class="w-full p-2 border border-gray-300 rounded">
+            <option value="ETH/USDC">Ethereum (ETH) / USD Coin (USDC)</option>
+            <option value="LQFI/USDC">LiquidFi Token (LQFI) / USD Coin (USDC)</option>
+            <option value="ETH/USDT">Ethereum (ETH) / Tether (USDT)</option>
+        </select>
     </div>
-
-    <script src="app.js"></script>
-</body>
-</html>
+    <input type="number" id="investmentAmount" placeholder="Enter investment amount" class="w-full p-2 border border-gray-300 rounded mt-2">
+    <button id="calculateROI" class="mt-4 w-full bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">Calculate ROI</button>
+    <p id="roiResult" class="mt-4 text-lg"></p>
+</div>
