@@ -1,28 +1,11 @@
 
-async function performSwap() {
-    const fromToken = document.getElementById('from-token').value;
-    const toToken = document.getElementById('to-token').value;
-    const amount = document.getElementById('from-amount').value;
-
-    if (amount <= 0) {
-        alert('Please enter a valid amount.');
-        return;
-    }
-
-    alert('Swapping ' + amount + ' ' + fromToken + ' to ' + toToken);
-}
-
-const connectWalletButton = document.getElementById('connectWallet');
-
 async function connectWallet() {
-    if (window.ethereum) { // Check if MetaMask is installed
+    if (window.ethereum) {
         try {
-            // Request account access
             await window.ethereum.request({ method: 'eth_requestAccounts' });
             const web3 = new Web3(window.ethereum);
-            // Display connected account
-            const accounts = await web3.eth.getAccounts();
-            connectWalletButton.innerText = `Connected: ${accounts[0]}`;
+            document.getElementById('connectWallet').innerText = 'Wallet Connected';
+            fetchPools(web3);
         } catch (error) {
             console.error("User denied account access");
         }
@@ -31,4 +14,19 @@ async function connectWallet() {
     }
 }
 
-connectWalletButton.addEventListener('click', connectWallet);
+async function fetchPools(web3) {
+    const factoryAddress = '0xca143ce32fe78f1f7019d7d551a6402fc5350c73';
+    const factoryABI = [{"constant":true,"inputs":[],"name":"allPairsLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"allPairs","outputs":[{"internalType":"address","name":"","type":"address"}],"payable":false,"type":"function"}];
+    const factoryContract = new web3.eth.Contract(factoryABI, factoryAddress);
+    const poolLength = await factoryContract.methods.allPairsLength().call();
+    const poolsList = document.getElementById('poolsList');
+
+    for (let i = 0; i < poolLength && i < 10; i++) {  // Limit to first 10 pools for performance
+        const poolAddress = await factoryContract.methods.allPairs(i).call();
+        const poolElement = document.createElement('div');
+        poolElement.innerText = `Pool ${i + 1}: ${poolAddress}`;
+        poolsList.appendChild(poolElement);
+    }
+}
+
+document.getElementById('connectWallet').addEventListener('click', connectWallet);
